@@ -1,0 +1,7 @@
+There are 2 Versions of the Scripts Folder, this is the newer.
+The older one currently is delivered to Herrn Fengler.
+
+Listed below are the biggest changes in the newer version:
+- commented code
+- user starts in mainmenu
+- no "bestätigungsfenster" (maybe as tk.Message()?)
