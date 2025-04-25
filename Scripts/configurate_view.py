@@ -5,8 +5,20 @@ from tkinter import ttk
 import tools as t
 
 class Configurate_View:
+    """
+    A class that represents the configuration view for a lesson, allowing users to select a lesson,
+    specify the number of words, and choose word types (nouns, verbs, adjectives, etc.).
+    """
+    
     def __init__(self, quelldatei, label, db_communicator):
-
+        """
+        Initialize the Configurate_View class with the provided parameters and set up the GUI.
+        
+        Args:
+            quelldatei (str): The source file associated with the configuration.
+            label (tk.Label): The label used to display configuration details.
+            db_communicator (object): The object responsible for interacting with the database.
+        """
         self.quelldatei = quelldatei
         self.label = label
         self.db_communicator = db_communicator
@@ -46,6 +58,12 @@ class Configurate_View:
         self.lektionenliste.place(x=10, y=55)
 
     def vokabelanzahl_auswahl(self):
+        """
+        Display a frame to allow the user to choose the number of words for the lesson. It also
+        creates a combobox for selecting the word count.
+
+        This method is called when the user confirms their lesson choice.
+        """
         self.lektion = self.lektionenliste.get()
 
         self.frame_vokabelanzahl = tk.Frame(self.root, height=100, width=780, bg="#1f2423")
@@ -72,7 +90,10 @@ class Configurate_View:
         self.vokabelanzahl_bestaetigen.place(x=400, y=10)
 
     def wortart_auswahl(self):
-
+        """
+        Display a frame to allow the user to select the word types (nouns, verbs, adjectives, etc.).
+        It includes buttons to increment or decrement the count for each word type.
+        """
         self.vokabelanzahl = self.vokabelanzahl_eingabe.get()
 
         self.frame_wortarten = tk.Frame(self.root, height=450, width=780, bg="#1f2423")
@@ -143,8 +164,13 @@ class Configurate_View:
         self.label_info.place(x=10, y=10)
 
     def eingabe_anzahl_wortarten(self, wortart, rechnung):
+        """
+        Update the count of selected word types (e.g., nouns, verbs) based on the user's action (increment or decrement).
 
-
+        Args:
+            wortart (str): The type of word (e.g., 'Substantiv', 'Verb').
+            anzahl (str): The amount to adjust the count (e.g., "+1", "-1").
+        """
         t.text_loeschen(self.meldungen)
 
         if wortart == "Substantiv":
@@ -180,6 +206,9 @@ class Configurate_View:
             self.klwozähler.set(f"Anzahl kleine Wörter: {self.anzahl_klwo}")
 
     def bestaetigen(self):
+        """
+        Start the vocabulary test based on the selected lesson and word types.
+        """
         if self.anzahl_subs + self.anzahl_verb + self.anzahl_adj + self.anzahl_klwo == int(self.vokabelanzahl):
             data = f"Lektion: {self.lektion}\nAnzahl Vokabeln: {self.vokabelanzahl}\nAnzahl subs: {self.anzahl_subs}\nAnzahl verb: {self.anzahl_verb}\nAnzahl adje: {self.anzahl_adj}\nAnzahl klwo: {self.anzahl_klwo}"
             self.label.config(text = data)
@@ -190,7 +219,12 @@ class Configurate_View:
             t.text_bearbeiten(self.meldungen,f"Es werden {self.vokabelanzahl} Vokabeln benötigt.", "warning")
 
     def other_focus(self, event):
+        """
+        Handle focus change events (such as user interaction with the comboboxes).
+        """
         self.meldungen.focus_set()
 
     def start(self):
+        """starts tkinter mainloop to display the GUI
+        """
         self.root.mainloop()
