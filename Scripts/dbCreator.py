@@ -7,16 +7,36 @@ from tkinter import Tk, filedialog
 #Class to creates Sqllite Databases from given Excel worksheets, started separately by "new_DB.bat"
 
 class dbCreator:
-    #loads Excel Workbook from User-chosen file
+    """
+    This class creates an SQLite database from an Excel file with vocabulary data.
+    It processes an Excel worksheet containing lesson vocabulary and creates a database
+    with tables for each lesson.
+    """
+    
     def __init__(self):
+        """
+        Initializes the dbCreator class by asking the user to select an Excel file
+        and loading the workbook and the active sheet.
+
+        Prompts the user to select an Excel file containing vocabulary data, 
+        then loads the workbook and assigns the active sheet for processing.
+        """
         root = Tk()
         root.withdraw()
         self.file = filedialog.askopenfilename(title="Bitte Datei auswählen", initialdir=t.find_path("Sources"),filetypes=(('Excel files', '*.xlsx'), ('All files', '*.*')))
         workbook = load_workbook(self.file)
         self.sheet = workbook.active
 
-    #establishes a connection to the new DB
     def get_connection(self):
+        """
+        Establishes a connection to a new SQLite database based on the selected Excel file.
+
+        Verifies that the first three columns of the sheet are "Lektion", "lat", and "art".
+        If the columns do not match, an error message is displayed.
+        
+        If the columns are correct, a new SQLite database is created, named after the Excel file
+        (without the extension).
+        """
 
         if (self.file != "") and (self.sheet["A"][0].value != "Lektion" or self.sheet["B"][0].value != "lat" or self.sheet["C"][0].value != "art"):
             print("Datenbank wurde nicht erstellt. Bitte folgende Reihenfolge der Tabelle beachten:\nLektion - lat - art")
@@ -26,8 +46,14 @@ class dbCreator:
                 os.remove(t.find_path(name_of_new_DB))
             self.connection = sqlite3.connect(name_of_new_DB)
 
-    #creates DB with the given connection
     def create_DB(self):
+        """
+        Creates tables and inserts vocabulary data from the Excel worksheet into the SQLite database.
+
+        This method creates a table for each lesson and populates it with vocabulary and word type data.
+        The database tables are named according to the lesson number, and each table contains
+        two columns: "Latein" (Latin word) and "Wortart" (word type).
+        """
         pointer = self.connection.cursor()
 
         num_lecs = []

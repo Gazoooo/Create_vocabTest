@@ -5,8 +5,19 @@ import docx as docx
 
 #creates the .docx and .txt files for the test
 class TestCreator:
-    #creates the filename of the .docx and .txt files
+    """
+    Creates .docx and .txt files for a vocab test based on the provided vocabulary data.
+    """
+    
     def __init__(self, wortschatz, all_data, anordnung_gruppe):
+        """
+        Initializes the TestCreator with the given vocabulary set, lesson data, and group arrangement.
+
+        Args:
+            wortschatz (str): The vocabulary set name.
+            all_data (dict): A dictionary containing lesson data with the lesson name as key.
+            anordnung_gruppe (dict): A dictionary with the vocabulary arrangement for each group.
+        """
         self.datum = t.datumsanzeige()
         self.wortschatz = wortschatz
         self.lektionsangabe = ""
@@ -19,8 +30,14 @@ class TestCreator:
 
         self.anordnung_gruppe = anordnung_gruppe
 
-    #creates a .docx file containing the vocabtest and saves it under "Output\Vokabeltest\"
     def create_docx(self):
+        """
+        Creates a .docx file containing the vocabulary test with proper formatting and saves it 
+        under the `"Output\Vokabeltest\"` directory.
+
+        The method adds lesson details, instructions, and the vocabularies (with blank lines for 
+        translations) for each group in the test.
+        """
         self.doc = docx.Document()
         for gruppe in self.anordnung_gruppe:
             self.text(self.datum, 9, "Calibri", "RIGHT")
@@ -33,8 +50,13 @@ class TestCreator:
                 self.text(f"{vokabel} {self.create_line()}", 9,"Calibri", "underline", "DISTRIBUTE")
         self.doc.save(t.find_path(f"Output/{self.filename}.docx"))
 
-    #creates a .txt file containing the vocabtest and saves it under "Output\Vokabeltest\"
     def create_txt(self):
+        """
+        Creates a .txt file containing the vocabulary test with plain text content and saves it 
+        under the `"Output\Vokabeltest\"` directory.
+
+        The method writes each group's vocabulary list in the test, without any formatting or blank lines.
+        """
         file = open(t.find_path(f"Output/{self.filename}.txt"), "w")
         for gruppe in self.anordnung_gruppe:
             file.write(f"Test {gruppe}:\n\n")
@@ -46,8 +68,16 @@ class TestCreator:
             file.write("\n\n")
         file.close() 
 
-    #convenience method to write to .docx file (!)
     def text(self, text, schriftgroesse, schriftstil, *extras):
+        """
+        A convenience method to add a paragraph of text to the .docx file with specified formatting.
+
+        Args:
+            text (str): The text to be added to the paragraph.
+            schriftgroesse (int): The font size of the text.
+            schriftstil (str): The font style (e.g., "Calibri").
+            *extras (str): Optional additional formatting parameters (e.g., "underline", "bold", "CENTER").
+        """
         para = self.doc.add_paragraph()
         if "RIGHT" in extras:
             para.alignment = WD_ALIGN_PARAGRAPH.RIGHT
@@ -63,14 +93,15 @@ class TestCreator:
         if "bold" in extras:
                 para.bold = True
 
-    #convenience method for underlining the vocabs in the docx. files (see Sources\Vorlage.png)
     def create_line(self):
+        """
+        Creates a line of underscores to be used for leaving space for the answers in the vocab test.
+
+        Returns:
+            str: A string containing 100 spaces followed by an underscore ("_").
+        """
         space = ""
         for i in range(100):
             space += " "
         line = space + "_"
         return line
-
-    #b.Bestaetigungsfenster(self.wortschatz, self.lektionsangabe, self.datum).start() 
-
-

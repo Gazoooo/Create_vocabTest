@@ -1,4 +1,3 @@
-#represents the GUI for the menu whit all configurated lections listed
 from functools import partial
 import tkinter as tk
 from tkinter import ttk
@@ -8,7 +7,18 @@ from testModel import TestModel
 import db_communicator as db
 
 class MainMenu_View:
+    """
+    Represents the main menu GUI for configuring and generating vocabulary tests.
+    This class allows the user to select a database, configure lessons, and create tests.
+    """
     def __init__(self):
+        """
+        Initializes the main menu GUI with components for selecting a database,
+        configuring lessons, and displaying messages.
+
+        Creates the main window and applies styling to the various GUI elements.
+        Prompts the user to select a database file and sets up the initial layout.
+        """
         self.root = tk.Tk()
         t.mittiges_fenster(self.root, 800, 900)
         self.root.title("Vokabeltest erstellen")
@@ -47,8 +57,14 @@ class MainMenu_View:
         self.db_bestaetigen = tk.Button(self.frame_db, text="Datei bestätigen.", font=("Arial", 20), bg="#2f4731", fg="white", command=self.show_more)
         self.db_bestaetigen.place(x=310, y=30)
 
-    #display all the GUI elements needed to config lecs after the db was choosen
     def show_more(self):
+        """
+        Displays the GUI elements needed to configure lessons after the database
+        has been selected by the user.
+
+        Creates frames for lesson configuration, adds buttons for creating new
+        lesson labels, and handles database communication.
+        """
         self.quelldatei = t.find_path(f"Sources/{self.db_eingabe.get()}") #saves the User-chosen DB
         #self.info_db = ttk.Label(self.frame_db, text=f'Gewählter Wortschatz:\n\n{self.quelldatei.split("Sources/")[1].split(".db")[0]}', style="Custom.TLabel")
         #self.info_db.place(x=10, y=10)
@@ -67,8 +83,13 @@ class MainMenu_View:
         self.auswahl_bes = tk.Button(self.frame_lektionen_bearbeiten, text="Konfigurationen bestätigen.",font=("Arial", 20), bg="#077d1b", fg="white",command=self.config_bestaetigt)
         self.auswahl_bes.place(x=215, y=500)
 
-    #displays one new label for configurating one more lection
     def label_erzeugen(self):
+        """
+        Creates a new label for configuring a new lesson.
+
+        Adds a frame to the GUI for configuring a lesson and displays a button for editing.
+        The labels are arranged in rows, and new rows are added when necessary.
+        """
         self.label_creater.destroy()
         self.lektionenframe = tk.Frame(self.frame_lektionen_bearbeiten, bg="grey", height=200, width=125)
         self.lektionenframe.place(x=self.xcord,y=self.ycord)
@@ -90,13 +111,24 @@ class MainMenu_View:
             self.label_creater = tk.Button(self.frame_lektionen_bearbeiten, text="+",font=("Arial", 20), command=self.label_erzeugen, bg = "#0D5A20", fg = "white")
             self.label_creater.place(x=self.buttonx, y=self.buttony)
 
-    #starts the GUI for configure the chosen label
     def config_lec(self, label):
-       cv.Configurate_View(self.quelldatei, label, self.db_communicator).start()
+        """
+        Opens the configuration view for a specific lesson.
 
-    #creates the info from all labels needed by the testModel to create the tests
-    #and passes it to the created testModel
+        Passes the selected lesson and its data to the configurate view for editing.
+        
+        Args:
+            label (tk.Label): The label representing the lesson to be configured.
+        """
+        cv.Configurate_View(self.quelldatei, label, self.db_communicator).start()
+
     def config_bestaetigt(self):
+        """
+        Confirms the configuration of all lessons and creates the test model.
+
+        Gathers the data from the configured lessons, checks for any errors (e.g., duplicate lessons),
+        and creates a test model based on the configuration.
+        """
         t.text_loeschen(self.meldungen)
 
         all_data = {}
@@ -125,7 +157,19 @@ class MainMenu_View:
 
 
     def other_focus(self, event):
+        """
+        Focuses the text widget when a combobox selection is made.
+        Ensures that the message area is active after a combobox selection.
+        
+        Args:
+            event (tk.Event): The event triggered by the combobox selection.
+        """
         self.meldungen.focus_set()
 
     def start(self):
+        """
+        Starts the Tkinter main loop to display the GUI.
+
+        This method keeps the application running, allowing user interaction with the GUI.
+        """
         self.root.mainloop()
