@@ -33,7 +33,7 @@ class TestCreator:
     def create_docx(self):
         """
         Creates a .docx file containing the vocabulary test with proper formatting and saves it 
-        under the `"Output\Vokabeltest\"` directory.
+        under the `"Output/Vokabeltest/"` directory.
 
         The method adds lesson details, instructions, and the vocabularies (with blank lines for 
         translations) for each group in the test.
@@ -53,7 +53,7 @@ class TestCreator:
     def create_txt(self):
         """
         Creates a .txt file containing the vocabulary test with plain text content and saves it 
-        under the `"Output\Vokabeltest\"` directory.
+        under the `"Output/Vokabeltest/"` directory.
 
         The method writes each group's vocabulary list in the test, without any formatting or blank lines.
         """

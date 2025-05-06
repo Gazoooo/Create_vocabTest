@@ -21,7 +21,8 @@ def find_quelldatei():
 
 def find_path(file):
     """
-    Determines the absolute path of a file, handling both script and frozen executable scenarios.
+    Determines the absolute path of a file/dir, handling both script and frozen executable scenarios.
+    Creates base directory if not exists.
     
     Args:
         file (str): The relative file path.
@@ -35,6 +36,11 @@ def find_path(file):
         path_to_root = os.path.split(os.path.dirname(__file__))[0]
             
     specific_path = os.path.join(path_to_root, file)
+    if os.path.splitext(specific_path)[1]:  # is file
+        os.makedirs(os.path.dirname(specific_path), exist_ok=True)
+    else:
+        os.makedirs(specific_path, exist_ok=True) # is dir
+    #print(f"Path: {specific_path}")
     return specific_path
 
 def datumsanzeige():
