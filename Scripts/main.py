@@ -6,11 +6,14 @@ from mainMenu_view import MainMenu_View
 output_path = t.find_path("Output")
 for file in os.listdir(output_path):
     path = os.path.join(output_path, file)
+    print(os.path.isfile(path))
     if os.path.isfile(path):
         try:
             os.remove(path)
         except PermissionError:
             print(f"Permission denied: {path}. File might be open in another program.")
+    else:
+        pass # ignore file that is deleted by the program itself
     os.remove(path)
     
 #start the GUI
